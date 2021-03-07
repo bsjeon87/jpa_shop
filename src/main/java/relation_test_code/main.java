@@ -14,16 +14,15 @@ public class main {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setUsername("member1");
             em.persist(member);
 
-            member.setTeam(team);
-            team.addMember(member);
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMembers().add(member); // Member table에 FK업데이트.
+            em.persist(team);
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
