@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.concurrent.locks.Lock;
 
 public class main {
     public static void main(String[] args) {
@@ -15,13 +16,13 @@ public class main {
 
         try {
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername("member1"); 
             em.persist(member);
 
-            Team team = new Team();
-            team.setName("teamA");
-            team.getMembers().add(member); // Member table에 FK업데이트.
-            em.persist(team);
+            Locker locker = new Locker();
+            locker.setName("locker");
+            locker.setMember(member);
+            em.persist(locker);
 
             tx.commit();
         } catch (Exception e) {
