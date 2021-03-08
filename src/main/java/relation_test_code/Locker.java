@@ -2,7 +2,7 @@ package relation_test_code;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 public class Locker {
 
     @Id @GeneratedValue
