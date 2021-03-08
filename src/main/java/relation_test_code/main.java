@@ -16,7 +16,7 @@ public class main {
 
         try {
             Member member = new Member();
-            member.setUsername("member1"); 
+            member.setUsername("member1");
             em.persist(member);
 
             Locker locker = new Locker();
