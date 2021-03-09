@@ -17,7 +17,7 @@ public class main {
         tx.begin();
 
         try {
-
+/*
 
             Order order = new Order();
             OrderItem orderItem = new OrderItem();
@@ -25,7 +25,7 @@ public class main {
             order.addOrderItem(orderItem);
             em.persist(order);
             em.persist(orderItem);
-
+*/
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
