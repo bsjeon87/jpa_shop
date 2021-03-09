@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Lock;
 
 public class main {
     public static void main(String[] args) {
-      /*  EntityManagerFactory emf = Persistence.createEntityManagerFactory("test");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("test");
         EntityManager em = emf.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
@@ -32,7 +32,7 @@ public class main {
         }
 
         emf.close();
-*/
+
     }
 
 }
