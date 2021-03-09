@@ -79,3 +79,38 @@ class B {
 
 MappedSuperclass
 - DB에는 부모 클래스에 대한 테이블을 생성하지 않고, 객체에서만 상속기능을 활용하도록 부모클래스에 어노테이션 적용.
+
+----
+프록시
+- Member를 조회할 때 Team도 바로 조회해야할까?
+  비즈니스 로직에서 Member값만 출력이 필요하는 경우: 굳이 DB에서 Team까지 가지고 올 필요가 없음.
+  비즈니스 로직에서 Membmer-Team 모두 출력이 필요하는 경우: Team까지 바로 가지고 오는게 좋음.
+
+ em.find : 데이터베이스를 통해 실제 엔티티 객체 조회
+ em.getReference() : 데이터베이스 조회를 미루는 가짜(프록시) 엔티티 객체 조회
+
+* 프록시 사용전 프록시를 영속성 context에서 제거하면 문제발생함.(프록시에서 결국 영속성컨텍스트에 요청해서 객체를 받아오므로 ..)
+            Member member1 = new Member();
+            member1.setName("aab");
+            em.persist(member1);
+
+            em.flush();
+            em.clear();
+
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("test");
+            em.detach(refMember);
+            System.out.println(refMember.getName());
+* 아래 케이스는 문제 안됨.
+            Member member1 = new Member();
+            member1.setName("aab");
+            em.persist(member1);
+
+            em.flush();
+            em.clear();
+
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("test");
+            System.out.println(refMember.getName());
+            em.detach(refMember);
+            System.out.println(refMember.getName());
