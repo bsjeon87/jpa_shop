@@ -79,3 +79,10 @@ class B {
 
 MappedSuperclass
 - DB에는 부모 클래스에 대한 테이블을 생성하지 않고, 객체에서만 상속기능을 활용하도록 부모클래스에 어노테이션 적용.
+
+프록시와 즉시로딩 주의
+- 지연로딩만 사용.
+- 즉시로딩을 적용하면 예상하지 못한 SQL이 발생. (연관된 Table이 많이 있으면, JOIN SQL이 많이나가게 되어 성능하락됨..)
+- 즉시로딩은 JPQL에서 N+1 문제를 일으킴.
+  ( em.createQuery("select m from Member m", Member.class).getResultlList();
+   => SQL로 변환해서 그대로 SQL 전달함.  전달 후 즉시로딩이 있는 객체들에 대해 각각 Query가 나가게됨. )
