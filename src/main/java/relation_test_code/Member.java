@@ -1,6 +1,8 @@
 package relation_test_code;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,19 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    //Period
+    //private LocalDateTime startDate;
+    //private LocalDate endDate;
+    @Embedded
+    private Period period;
+
+    //주소
+    //private String city;
+    //private String Street;
+    //private String zipcode;
+    @Embedded
+    private Address address;
 
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")

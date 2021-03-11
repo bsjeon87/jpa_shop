@@ -86,3 +86,11 @@ MappedSuperclass
 - 즉시로딩은 JPQL에서 N+1 문제를 일으킴.
   ( em.createQuery("select m from Member m", Member.class).getResultlList();
    => SQL로 변환해서 그대로 SQL 전달함.  전달 후 즉시로딩이 있는 객체들에 대해 각각 Query가 나가게됨. )
+--------
+값 타입
+- 타입은 Entity 타입과 값타입으로 나뉨.
+- Entity 타입은 id값을 가지고, 데이터가 변해도 식별자로 지속해서 추적가능.(@Entity)
+- 값타입은 식별자가 없고 값만 있으므로 변경시 추적 불가.(자바 기본객체) / 값타입은 엔티티 생명주기를 의존함.
+- 값타입중 임베디드 타입이 있음. 임베디드 타입의 경우 매핑되는 테이블은 동일하다.
+- 임베디드 타입은 연관관계가 있을수있음.(임베디드 타입 내에 entity를 가질수있음.-> 단순히 forien key를 가지는것이므로 상관없음.)
+- 한 Entity에 동일 임베디드 타입을 2개를 가지면 테이블 column 이름이 충돌하게 되므로, @AttributeOverride를 사용해서 해결할 수 있음.
