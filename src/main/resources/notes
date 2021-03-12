@@ -114,3 +114,26 @@ MappedSuperclass
             System.out.println(refMember.getName());
             em.detach(refMember);
             System.out.println(refMember.getName());
+
+  -------------------
+
+  JPQL
+  - 복잡한 조건의 조회를 위하여 SQL과 같은 언어가 필요함. => JPQL
+   (JPA의 단순한 PK ID를 이용한 단일 조회나 객체 그래프에 의한 조회(a.getB().getC() )가 아닌
+    특정 조건에 해당하는 객체들의 조회를 원할 경우. -> 월급 170만원 이상인 사용자 조회 )
+
+    동적쿼리: 프로그램이 수행되면서 특정한 조건에 맞추어 쿼리문을 변경하는 방식 => 단순 문자열을 사용하게 되면 에러를 유발하거나 유지 보수가 힘듬.
+     => JPA Criteria(JPA에서 지원) . Criteria의 경우 실수를 줄여줄 수있으나 쿼리문과 너무 동떨어져있어 유지 관리하기 어려움. =>
+      QueryDSL(Opensource)을 사용함(쿼리문과 흡사하고 단순 문자열에 따른 동적쿼리 실수를 막아줌).
+
+    간혹 특정 DB에 맞는 네이티브 SQL을 사용해야하는데, JPA는 네이티브 SQL을 사용하도록 지원해줌.
+    JPA와 별도로 JDBC API를 직접이용하거나 MyBatis/SpringJdbcTemplate와 함께사용할 수 있음.( JPA와 함께사용시 영속성 관리 타이밍 주의해야함.)
+
+
+    JPQL문법
+    ex: select m from Member as m where m.age > 18
+    엔티티와 속성은 대소문자 구분 / JPQL 키워드는 대소문자 구분X( SELECT / FROM /where ..)
+    엔티티 이름 사용, 테이블 이름이 아님.
+    별칭은 필수(as는 생략가능)
+
+    TypeQuery / Query
