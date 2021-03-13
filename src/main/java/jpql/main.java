@@ -50,6 +50,16 @@ public class main {
                     System.out.println("print" + m.getUsername());
                 }
             }
+
+            String query = "select m.username, 'HELLO', true From Member m";
+            List<Object[]> resultList1 = em.createQuery(query)
+                    .getResultList();
+
+            for (Object[] objects : resultList1) {
+                System.out.println("name" + (String)objects[0]);
+                System.out.println("hello: " + (String)objects[1]);
+                System.out.println("bool" + (Boolean)objects[2]);
+            }
            /* List<TeamMember> resultList = em.createQuery("select new jpql.TeamMember(m,t) from Member as m LEFT JOIN Team as t on m.username = t.name", TeamMember.class)
                     .getResultList();
 
