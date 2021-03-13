@@ -158,3 +158,13 @@ MappedSuperclass
     ex: (jpql에서는 select m만 적었으나 변환된 SQL에서는 T까지 불러옴 - 즉시로딩과 동일 / 즉시로딩과의 차이는 명시적으로 컨트롤 가능한 부분임. )
       JPQL : select m from Member m join fetch m.team
       => SQL: select M.* , T.* From MEMBER M INNER JOIN TEAM T ON M.TEAM_ID=T.ID
+
+    컬렉션 패치 조인
+    - 일대다 관계
+   ex:
+     JPQL : select t from Team t join fetch t.memebers where t.name = '팀A'
+     => SQL : select T.* , M.* FROM TEAM T INNER JOIN MEMBER M ON T.ID=M.TEAM_ID WHERE T.NAME = '팀A'
+
+     * 일대다 조인은 데이터가 뻥튀기 될수있음. ( ex: 회원1 -> 팀A , 회원2 -> 팀A => 팀A 조회시 결과 list의  실제 팀은 1(동일객체)이지만 size는 2임. )
+     => 중복삭제를 위해서는 DISTINCT를 사용해야함. (SQL에 DISTINCT를 추가. + 애플리케이션에 엔티티 중복 제거. )
+       (sql distinct는 모든 값이 똑같은 경우에 한해서만 중복을 제거해줌.

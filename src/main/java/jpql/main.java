@@ -37,14 +37,29 @@ public class main {
             em.flush();
             em.clear();
 
+
+            String query = "select distinct t From Team t join fetch t.members";//=>size가 2. sql distinct는 전체가 동일해야 중복삭제//jpa단에서 추가로 걸러줌.
+           // String query = "select t From Team"; //=> size가 2로 나옴. (팀만 선택)
+           // String query = "select t From Team t join fetch t.members"; //=>size가 3로 나옴( 연관된 회원갯수만큼 나옴 ) 중복발생.
+            List<Team> resultList = em.createQuery(query, Team.class)
+                    .getResultList();
+            for (Team team : resultList) {
+                //대다 조인은 데이터가 뻥튀기 될수있음.
+                System.out.println("member" + team.getName() + team.getMembers().size() );
+            }
+
             //String query = "select m From Member m"; //지연로딩이므로 실제 사용할때 별로 쿼리가 추가로 나감.
-            String query = "select m From Member m join fetch m.team"; //사용될 team 값까지 함께가지고옴.
+            /*String query = "select m From Member m join fetch m.team"; //사용될 team 값까지 함께가지고옴.
+
+
             List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
 
             for (Member member : resultList) {
                 System.out.println("member" + member.getUsername() + member.getTeam().getName() );
             }
+
+             */
 
             /*
             Member member = new Member();
