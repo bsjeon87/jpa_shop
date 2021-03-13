@@ -15,6 +15,35 @@ public class main {
             member.setUsername("bs");
             em.persist(member);
 
+            Member member2 = new Member();
+            member2.setUsername("bs2");
+            em.persist(member2);
+
+            Team team1 = new Team();
+            team1.setName("A");
+            em.persist(team1);
+
+            Team team2 = new Team();
+            team2.setName("B");
+            em.persist(team2);
+
+            member.setTeam(team1);
+            member2.setTeam(team2);
+
+            em.flush();
+            em.clear();
+
+            List<Member> resultList = em.createQuery("select m from Member as m  JOIN m.team as t on t.name = 'B'", Member.class)
+                    .getResultList();
+
+            for (Member m : resultList) {
+                if (m == null) {
+                    System.out.println("null");
+                } else {
+                    System.out.println("print" + m.getUsername());
+                }
+            }
+            /*
             TypedQuery<Member> select_m_from_member_m = em.createQuery("select m from Member m", Member.class);
             List<Member> resjultList = select_m_from_member_m.getResultList(); //결과가 없으면 빈리스트 반환(null exception 발생하지 않음.)
             //Member m = select_m_from_member_m.getSingleResult(); //하나인 경우. (결과가 정확히 하나여야함. 그외에는 exception 발생함.)
@@ -25,7 +54,7 @@ public class main {
 
 
             Query query = em.createQuery("select m.username, m.age from Member m");
-
+            */
             tx.commit();
         } catch (Exception e) {
             System.out.println(e.getMessage());
