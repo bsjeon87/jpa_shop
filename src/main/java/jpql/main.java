@@ -50,7 +50,7 @@ public class main {
                     System.out.println("print" + m.getUsername());
                 }
             }
-
+/*
             String query = "select m.username, 'HELLO', true From Member m";
             List<Object[]> resultList1 = em.createQuery(query)
                     .getResultList();
@@ -59,6 +59,20 @@ public class main {
                 System.out.println("name" + (String)objects[0]);
                 System.out.println("hello: " + (String)objects[1]);
                 System.out.println("bool" + (Boolean)objects[2]);
+            }
+
+ */
+            String query =
+                    "select " +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else '일반요금' " +
+                            "end " +
+                            "from Member m";
+            List<String> resultList1 = em.createQuery(query, String.class)
+                    .getResultList();
+            for (String s : resultList1) {
+                System.out.println(s);
             }
            /* List<TeamMember> resultList = em.createQuery("select new jpql.TeamMember(m,t) from Member as m LEFT JOIN Team as t on m.username = t.name", TeamMember.class)
                     .getResultList();
