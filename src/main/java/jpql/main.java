@@ -27,20 +27,24 @@ public class main {
             team2.setName("B");
             em.persist(team2);
 
+            Team team3 = new Team();
+            team3.setName("bs");
+            em.persist(team3);
+
             member.setTeam(team1);
             member2.setTeam(team2);
 
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m from Member as m  JOIN m.team as t on t.name = 'B'", Member.class)
+            List<TeamMember> resultList = em.createQuery("select new jpql.TeamMember(m,t) from Member as m LEFT JOIN Team as t on m.username = t.name", TeamMember.class)
                     .getResultList();
 
-            for (Member m : resultList) {
-                if (m == null) {
+            for (TeamMember m : resultList) {
+                if (m.getMember() == null) {
                     System.out.println("null");
                 } else {
-                    System.out.println("print" + m.getUsername());
+                    System.out.println("print" + m.getMember().getUsername());
                 }
             }
             /*
