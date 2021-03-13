@@ -137,3 +137,24 @@ MappedSuperclass
     별칭은 필수(as는 생략가능)
 
     TypeQuery / Query
+
+
+    경로 표현식( 각 종류에 따라 sql 처리방식이 달라짐. )
+    - 상태필드 ( m.username ) 단순히 값을 저장하기 위한 필드 -> 경로탐색의 끝. 추가 탐색이 필요없음.
+      =>select m.username From Member m
+
+    - 연관필드 : 연관관계를 위한 필드 ( **실무에서는 명시적 join을 사용해야함 이 후 튜닝하기 힘듬.) (묵시적으로는 내부조인만 발생됨.)
+     -- 단일값 연관 필드( @ManyToOne , @OneToOne, 대상이 엔티티(m.team)  -> 묵시적 내부조인(inner join) 발생. 추가 탐색 가능.
+      => select m.team From Member m (실무에서 조심해야함. 쿼리 튜닝할때 힘듬. jpql과 sql이 최대한 비슷하게 나가도록 만듬..)
+     -- 컬렉션 값 연관필드 (@OneToMany, @ManyToMany, 대상이 컬렉션(ex:m.orders) -> 묵시적 내부조인 발생. 추가 탐색 불가.
+      =>  select t.members From Team t / select m.username From team t join t.members m (명시적 내부조인을 통해 탐색 가능.)
+     ***** 조인은 SQL 튜닝에 중요포인트임.
+
+    ****** 패치조인 ********* (실무에서 꼭 사용해야함/ 없으면 실무가 안됨.)
+    - SQL 조인 종류가 아님
+    - JPQL에서 성능최적화를 위해 제공하는 기능.
+    - 연관된 엔티티나 컬렉션을 SQL 한번에 함께 조회하는 기능.
+    - join fetch 명령어 사용.
+    ex: (jpql에서는 select m만 적었으나 변환된 SQL에서는 T까지 불러옴 - 즉시로딩과 동일 / 즉시로딩과의 차이는 명시적으로 컨트롤 가능한 부분임. )
+      JPQL : select m from Member m join fetch m.team
+      => SQL: select M.* , T.* From MEMBER M INNER JOIN TEAM T ON M.TEAM_ID=T.ID

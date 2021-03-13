@@ -150,3 +150,12 @@ MappedSuperclass
       =>  select t.members From Team t / select m.username From team t join t.members m (명시적 내부조인을 통해 탐색 가능.)
      ***** 조인은 SQL 튜닝에 중요포인트임.
 
+    ****** 패치조인 ********* (실무에서 꼭 사용해야함/ 없으면 실무가 안됨.)
+    - SQL 조인 종류가 아님
+    - JPQL에서 성능최적화를 위해 제공하는 기능.
+    - 연관된 엔티티나 컬렉션을 SQL 한번에 함께 조회하는 기능.
+    - join fetch 명령어 사용.
+    ex: (jpql에서는 select m만 적었으나 변환된 SQL에서는 T까지 불러옴 - 즉시로딩과 동일 / 즉시로딩과의 차이는 명시적으로 컨트롤 가능한 부분임. )
+      JPQL : select m from Member m join fetch m.team
+      => SQL: select M.* , T.* From MEMBER M INNER JOIN TEAM T ON M.TEAM_ID=T.ID
+

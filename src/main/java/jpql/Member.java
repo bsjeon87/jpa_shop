@@ -19,6 +19,10 @@ public class Member {
         this.team = team;
 
     }
+
+    public Team getTeam() {
+        return team;
+    }
     public Long getId() {
         return id;
     }

@@ -11,6 +11,42 @@ public class main {
 
         tx.begin();
         try {
+            Team teamA = new Team();
+            teamA.setName("팀A");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("팀B");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("회원1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("회원2");
+            member2.setTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setTeam(teamB);
+            em.persist(member3);
+
+            em.flush();
+            em.clear();
+
+            //String query = "select m From Member m"; //지연로딩이므로 실제 사용할때 별로 쿼리가 추가로 나감.
+            String query = "select m From Member m join fetch m.team"; //사용될 team 값까지 함께가지고옴.
+            List<Member> resultList = em.createQuery(query, Member.class)
+                    .getResultList();
+
+            for (Member member : resultList) {
+                System.out.println("member" + member.getUsername() + member.getTeam().getName() );
+            }
+
+            /*
             Member member = new Member();
             member.setUsername("bs");
             em.persist(member);
@@ -50,6 +86,8 @@ public class main {
                     System.out.println("print" + m.getUsername());
                 }
             }
+
+             */
 /*
             String query = "select m.username, 'HELLO', true From Member m";
             List<Object[]> resultList1 = em.createQuery(query)
@@ -62,6 +100,7 @@ public class main {
             }
 
  */
+            /*
             String query =
                     "select " +
                             "case when m.age <= 10 then '학생요금' " +
@@ -74,6 +113,8 @@ public class main {
             for (String s : resultList1) {
                 System.out.println(s);
             }
+            */
+
            /* List<TeamMember> resultList = em.createQuery("select new jpql.TeamMember(m,t) from Member as m LEFT JOIN Team as t on m.username = t.name", TeamMember.class)
                     .getResultList();
 
