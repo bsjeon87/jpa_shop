@@ -37,6 +37,14 @@ public class main {
             em.flush();
             em.clear();
 
+            int resultCnt = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+
+            System.out.println("result cnt" + resultCnt);
+            System.out.println(" 객체 age" + member1.getAge()); //DB는 20이지만 객체는 반영되지 않음. (다시 DB에서 로딩해야함.)
+                                                               //em.clear -> em.find 해서 다시가져와야함.
+
+            /*
             List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
                     .setParameter("username", "회원1")
                     .getResultList();
@@ -44,6 +52,8 @@ public class main {
             for (Member m : resultList) {
                 System.out.println("name" + m.getUsername());
             }
+
+             */
             /*
 
             String query = "select distinct t From Team t join fetch t.members";//=>size가 2. sql distinct는 전체가 동일해야 중복삭제//jpa단에서 추가로 걸러줌.
