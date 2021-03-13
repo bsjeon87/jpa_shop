@@ -174,3 +174,20 @@ MappedSuperclass
      JPQL : select t from Team t join t.memebers where t.name = '팀A'
      => SQL : select T.*  FROM TEAM T INNER JOIN MEMBER M ON T.ID=M.TEAM_ID WHERE T.NAME = '팀A'
      *** 패치 조인은 객체그래프를 SQL 한번에 조회하는 개념(실무에서 정말 많이씀.) // N+1문제를 대부분 해결함.
+
+     패치 조인의 특징과 한계
+     - 패치 조인 대상에는 별칭을 줄 수 없음.
+     => 하이버네이트는 가능. 가급적 사용X
+       ex: select t From Team t join fetch t.members as m => as m을 사용하면 안됨.
+       ( 기본적으로 fetch join은 연관된 것들을 모두 가져오는 개념임. as m 이후 where을 사용하여 조건을 사용하는건 개념에 맞지 않음.)
+     - 둘 이상의 컬렉션은 패치 조인 할 수 없다.(패치조인은 컬렉션 하나만 지정해서 가지고 올수있다고 생각하는게 좋음.)
+     - 컬렉션 패치 조인하면 페이지 API(setFirstResult, setMaxResults)를 사용할 수 없음.
+       (데이터 뻥튀기 문제때문에.. 뻥튀기 한 뒤에 카운트를 계산을 하므로 원하는 페이징이 되지 않음. )
+        =>  해결법은 다대일 연관관계로 조회하여 페이징 문제를 해결할 수 있음.(컬렉션 패치조인이 아님.)
+        => 다른 해결법은 @batchsize 를 주는 방법이 있음. ( lazy loading이지만 batchsize만큼 한번에 읽어옴) => team조회 1회 + batchsize loading 1회.
+        => DTO로 직접 쿼리를 짜야함.( 추천X)
+
+     **** 실무에서 글로벌 로딩 전략은 모두 지연로딩 + 최적화가 필요한 곳은 패치 조인 적용.
+     (패치 조인은 객체 그래프를 유지할 때 사용하면 효과적.
+      여러 테이블을 조인해서 엔티티가 가진 모양이 아닌 전혀 다른 결과를 내야하면, 패치 조인보다는 일반 조인을 사용하고 필요한 데이터들만 조회해서
+      DTO로 반환하는 것이 효과적)
