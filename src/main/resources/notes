@@ -210,3 +210,12 @@ MappedSuperclass
 
       SQL ( 위에 두 JPQL모두 동일한 결과 )
         select count(m.id) as cnt from member m
+
+      Named쿼리
+      - @NamedQuery(name = "Member.findByUsername" , query =" select ~~~" )
+      -어노테이션 / xml에 정의
+      -애플리케이션 로딩 시점에 초기화한 후 재사용함.
+      -애플리케이션 로딩 시점에 쿼리를 검증할 수 있음.(문법오류)
+      -정적 쿼리만 가능.
+      -Spring data jpa 사용 시 interface 메소드 위에 쓸수 있음.
+

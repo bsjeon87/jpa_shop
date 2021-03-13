@@ -37,6 +37,14 @@ public class main {
             em.flush();
             em.clear();
 
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "회원1")
+                    .getResultList();
+
+            for (Member m : resultList) {
+                System.out.println("name" + m.getUsername());
+            }
+            /*
 
             String query = "select distinct t From Team t join fetch t.members";//=>size가 2. sql distinct는 전체가 동일해야 중복삭제//jpa단에서 추가로 걸러줌.
            // String query = "select t From Team"; //=> size가 2로 나옴. (팀만 선택)
@@ -48,6 +56,8 @@ public class main {
                 System.out.println("member" + team.getName() + team.getMembers().size() );
             }
 
+
+             */
             //String query = "select m From Member m"; //지연로딩이므로 실제 사용할때 별로 쿼리가 추가로 나감.
             /*String query = "select m From Member m join fetch m.team"; //사용될 team 값까지 함께가지고옴.
 
