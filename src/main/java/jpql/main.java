@@ -34,10 +34,23 @@ public class main {
             member.setTeam(team1);
             member2.setTeam(team2);
 
+            UnReleatedMember unrelatedMember = new UnReleatedMember();
+            unrelatedMember.setName("bs");
+            em.persist(unrelatedMember);
+
             em.flush();
             em.clear();
-
-            List<TeamMember> resultList = em.createQuery("select new jpql.TeamMember(m,t) from Member as m LEFT JOIN Team as t on m.username = t.name", TeamMember.class)
+            // where은 연관관계가 없는 조인을 진행하면 exception 발생. on사용시 연관관계 없는 엔티티르 사용하여 필터후 조인처리를 할수 있음.
+            List<Member> resultList = em.createQuery("select m from Member as m  JOIN UnReleatedMember as u on u.name = m.username", Member.class)
+                    .getResultList();
+            for (Member m : resultList) {
+                if (m == null) {
+                    System.out.println("null");
+                } else {
+                    System.out.println("print" + m.getUsername());
+                }
+            }
+           /* List<TeamMember> resultList = em.createQuery("select new jpql.TeamMember(m,t) from Member as m LEFT JOIN Team as t on m.username = t.name", TeamMember.class)
                     .getResultList();
 
             for (TeamMember m : resultList) {
@@ -46,7 +59,7 @@ public class main {
                 } else {
                     System.out.println("print" + m.getMember().getUsername());
                 }
-            }
+            }*/
             /*
             TypedQuery<Member> select_m_from_member_m = em.createQuery("select m from Member m", Member.class);
             List<Member> resjultList = select_m_from_member_m.getResultList(); //결과가 없으면 빈리스트 반환(null exception 발생하지 않음.)
