@@ -201,4 +201,12 @@ MappedSuperclass
             where type(i) IN (Book, movie)
       => sql : select i from i where i.DTYPE in ('B', 'M')
 
-      
+      엔티티 직접 사용 - 기본키 값.(외래키도 동일)
+      - JPQL에서 엔티티를 직접 사용하면 SQL에서 해당 엔티티의 기본 키 값을 사용.
+
+      JPQL
+        select count(m.id) from Member m
+        select count(m) from Member m
+
+      SQL ( 위에 두 JPQL모두 동일한 결과 )
+        select count(m.id) as cnt from member m
